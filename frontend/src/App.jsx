@@ -14,9 +14,7 @@ import {
 } from 'lucide-react'
 import './index.css'
 
-const apiUrl =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? '/api' : 'http://localhost:5000')
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const sampleClaim =
   'Paste a claim, headline, or paragraph. TruthLens will scan live coverage, weigh trusted sources, and show whether reporting supports or disputes it.'
@@ -64,6 +62,9 @@ function App() {
     setResult(null)
 
     try {
+      if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
+        throw new Error('VITE_API_URL is not configured for production.')
+      }
       const response = await axios.post(`${apiUrl}/predict`, { text })
       setResult(response.data)
     } catch (err) {

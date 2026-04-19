@@ -1,9 +1,9 @@
 # TruthLens Deployment Notes
 
-This repository is set up for a single Vercel project using Services:
+This repo is configured for a split deployment:
 
-- `frontend/` serves the Vite web app at `/`
-- `backend/app.py` serves the Flask API at `/api`
+- `frontend/` -> deploy to **Vercel**
+- `backend/` -> deploy to **Render**
 
 ## Local development
 
@@ -21,22 +21,37 @@ cd frontend
 npm run dev
 ```
 
-Optional local env for frontend:
+Optional local frontend env:
 
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-## Vercel deployment
+## Backend on Render
 
-1. Import the repo into Vercel.
-2. In Project Settings, set **Framework Preset** to `Services`.
-3. Deploy from the repo root.
+Create a **Web Service** from the `backend` directory with:
 
-The frontend uses:
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
 
-- `VITE_API_URL` if you provide it
-- otherwise `/api` in production
-- otherwise `http://localhost:5000` during local frontend development
+After deploy, confirm:
 
-That means deployed browser requests stay same-origin and do not need a public API URL override.
+- `https://your-backend.onrender.com/health`
+
+## Frontend on Vercel
+
+Create a Vercel project using the `frontend` directory as the root.
+
+Set this environment variable in Vercel:
+
+```env
+VITE_API_URL=https://your-backend.onrender.com
+```
+
+Then redeploy the frontend.
+
+## Notes
+
+- The frontend now expects `VITE_API_URL` in production.
+- Backend CORS is already enabled in Flask.
+- Model files stay in `backend/model/` and are loaded at startup.
