@@ -36,6 +36,19 @@ This project is a good showcase of full-stack work because it:
   - fetches news data from Google News RSS
   - computes source stance and verdict confidence
 
+## Folder structure
+
+- `frontend/`
+  - `src/` — React source files, including `App.jsx`
+  - `package.json` — frontend dependencies and scripts
+  - `vite.config.js` — Vite configuration
+  - `public/` — static assets served by Vite
+
+- `backend/`
+  - `app.py` — Flask API implementation
+  - `requirements.txt` — Python dependencies
+  - `model/` — saved ML model and vectorizer files
+
 ## Tech Stack
 
 - Frontend: React, Vite, Axios, Lucide React icons
