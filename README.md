@@ -1,96 +1,143 @@
-# TruthLens
+<div align="center">
 
-TruthLens is a simple but powerful proof-of-concept for verifying news claims. It lets a user paste a headline or paragraph, then checks live news coverage and a local classifier to show whether the claim is likely supported, disputed, or mixed.
+# 🔍 TruthLens
 
-## What This Project Does
+**Paste a claim. Get a verdict.**
 
-TruthLens combines a modern frontend with a backend that:
+TruthLens is a full-stack proof-of-concept for real-time news verification. It checks live news coverage and a local ML classifier to determine whether a claim is **supported**, **disputed**, or **mixed** — with a confidence score and source breakdown.
 
-- accepts user claims through a clean React interface
-- generates search queries from the claim text
-- fetches live news results from Google News RSS
-- weighs evidence from trusted sources
-- shows a verdict, confidence score, and evidence breakdown
-- falls back to a local ML classifier when live data is limited
+[![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
+[![Backend](https://img.shields.io/badge/Backend-Python%20%2B%20Flask-3b7bbf?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
+[![ML](https://img.shields.io/badge/ML-scikit--learn-f89939?style=flat-square&logo=scikit-learn)](https://scikit-learn.org)
+[![Deploy](https://img.shields.io/badge/Deploy-Vercel%20%2B%20Render-00c7b7?style=flat-square)](https://render.com)
 
-## Why This Project Matters
+</div>
 
-This project is a good showcase of full-stack work because it:
+---
 
-- connects frontend and backend cleanly
-- uses live external data alongside a local model
-- visualizes results in a user-friendly way
-- is structured for deployment with separate frontend and backend services
+## What It Does
 
-## Structure
+TruthLens combines a modern frontend with an intelligent backend pipeline:
 
-- `frontend/`
-  - React + Vite app
-  - sends claim text to the backend API
-  - displays verdict details, source summaries, and confidence metrics
+- 📥 Accepts user claims through a clean React interface
+- 🔎 Generates optimized search queries from the claim text
+- 📡 Fetches live news results from **Google News RSS**
+- ⚖️ Weighs evidence from trusted sources to assess stance
+- 📊 Returns a **verdict**, **confidence score**, and **evidence breakdown**
+- 🤖 Falls back to a local **ML classifier** when live data is limited
 
-- `backend/`
-  - Flask API service
-  - loads a saved ML model and vectorizer from `backend/model/`
-  - builds claim-focused search queries
-  - fetches news data from Google News RSS
-  - computes source stance and verdict confidence
+---
 
-## Folder structure
+## Why It Matters
 
-- `frontend/`
-  - `src/` — React source files, including `App.jsx`
-  - `package.json` — frontend dependencies and scripts
-  - `vite.config.js` — Vite configuration
-  - `public/` — static assets served by Vite
+This project demonstrates production-aware full-stack thinking:
 
-- `backend/`
-  - `app.py` — Flask API implementation
-  - `requirements.txt` — Python dependencies
-  - `model/` — saved ML model and vectorizer files
+| Aspect | Detail |
+|---|---|
+| **Architecture** | Clean frontend ↔ backend separation via REST API |
+| **Data** | Combines live external news with an offline ML model |
+| **UX** | User-friendly verdict visualization with source summaries |
+| **Deployment** | Ready for cloud deployment with separate frontend/backend services |
+
+---
+
+## Project Structure
+
+```
+TruthLens/
+├── frontend/               # React + Vite app
+│   ├── src/
+│   │   └── App.jsx         # Main component — claim input & verdict display
+│   ├── public/             # Static assets
+│   ├── package.json        # Frontend dependencies
+│   └── vite.config.js      # Vite configuration
+│
+└── backend/                # Flask API service
+    ├── app.py              # API implementation — search, score, respond
+    ├── requirements.txt    # Python dependencies
+    └── model/              # Saved ML model + vectorizer (.pkl files)
+```
+
+---
 
 ## Tech Stack
 
-- Frontend: React, Vite, Axios, Lucide React icons
-- Backend: Python, Flask, Flask-CORS, scikit-learn model persistence
-- Deployment: Render for backend, Vercel for frontend
+**Frontend**
+- [React](https://react.dev) — UI library
+- [Vite](https://vitejs.dev) — build tool and dev server
+- [Axios](https://axios-http.com) — HTTP client for API calls
+- [Lucide React](https://lucide.dev) — icon set
+
+**Backend**
+- [Python](https://www.python.org) + [Flask](https://flask.palletsprojects.com) — API server
+- [Flask-CORS](https://flask-cors.readthedocs.io) — cross-origin request handling
+- [scikit-learn](https://scikit-learn.org) — ML model persistence and inference
+- Google News RSS — live news data source
+
+**Deployment**
+- [Vercel](https://vercel.com) — frontend hosting
+- [Render](https://render.com) — backend hosting
+
+---
 
 ## Run Locally
 
-### Backend
+### 1. Backend
 
 ```powershell
 cd backend
+
+# Create and activate virtual environment
 python -m venv venv
-.
-venv\Scripts\activate
+.\venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Start the Flask server
 python app.py
 ```
 
-### Frontend
+The API will be available at `http://localhost:5000`.
+
+### 2. Frontend
 
 ```powershell
 cd frontend
+
+# Install dependencies
 npm install
+
+# Start the dev server
 npm run dev
 ```
 
-### Local environment variable
+### 3. Environment Variables
+
+Create a `.env` file in the `frontend/` directory:
 
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-## Deployment Notes
+---
 
-- Deploy the `frontend/` folder to Vercel.
-- Deploy the `backend/` folder to Render.
-- Set `VITE_API_URL` in the frontend environment to the deployed backend URL.
+## Deployment
+
+**Frontend → Vercel**
+1. Connect the `frontend/` folder to a Vercel project.
+2. Set the environment variable `VITE_API_URL` to your deployed Render backend URL.
+
+**Backend → Render**
+1. Connect the `backend/` folder to a Render web service.
+2. Render will automatically detect the Python environment and install dependencies from `requirements.txt`.
+
+---
 
 ## Resume-Friendly Highlights
 
-- End-to-end full-stack implementation with frontend, backend, and ML.
-- Real-time news verification use case.
-- Clear separation of frontend and backend responsibilities.
-- Deployment-ready configuration for Vercel and Render.
+- ✅ **End-to-end full-stack** — React frontend, Flask backend, and a trained ML model working together seamlessly
+- ✅ **Real-time data** — live news verification via Google News RSS with source trust weighting
+- ✅ **ML integration** — scikit-learn classifier as a reliable offline fallback
+- ✅ **Deployment-ready** — configured for Vercel and Render with proper environment variable handling
+- ✅ **Clean separation of concerns** — well-defined API boundaries between frontend and backend
