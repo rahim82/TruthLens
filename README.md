@@ -1,57 +1,83 @@
-# TruthLens Deployment Notes
+# TruthLens
 
-This repo is configured for a split deployment:
+TruthLens is a simple but powerful proof-of-concept for verifying news claims. It lets a user paste a headline or paragraph, then checks live news coverage and a local classifier to show whether the claim is likely supported, disputed, or mixed.
 
-- `frontend/` -> deploy to **Vercel**
-- `backend/` -> deploy to **Render**
+## What This Project Does
 
-## Local development
+TruthLens combines a modern frontend with a backend that:
 
-Backend:
+- accepts user claims through a clean React interface
+- generates search queries from the claim text
+- fetches live news results from Google News RSS
+- weighs evidence from trusted sources
+- shows a verdict, confidence score, and evidence breakdown
+- falls back to a local ML classifier when live data is limited
+
+## Why This Project Matters
+
+This project is a good showcase of full-stack work because it:
+
+- connects frontend and backend cleanly
+- uses live external data alongside a local model
+- visualizes results in a user-friendly way
+- is structured for deployment with separate frontend and backend services
+
+## Structure
+
+- `frontend/`
+  - React + Vite app
+  - sends claim text to the backend API
+  - displays verdict details, source summaries, and confidence metrics
+
+- `backend/`
+  - Flask API service
+  - loads a saved ML model and vectorizer from `backend/model/`
+  - builds claim-focused search queries
+  - fetches news data from Google News RSS
+  - computes source stance and verdict confidence
+
+## Tech Stack
+
+- Frontend: React, Vite, Axios, Lucide React icons
+- Backend: Python, Flask, Flask-CORS, scikit-learn model persistence
+- Deployment: Render for backend, Vercel for frontend
+
+## Run Locally
+
+### Backend
 
 ```powershell
 cd backend
-.\venv\Scripts\python.exe app.py
+python -m venv venv
+.
+venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
 ```
 
-Frontend:
+### Frontend
 
 ```powershell
 cd frontend
+npm install
 npm run dev
 ```
 
-Optional local frontend env:
+### Local environment variable
 
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-## Backend on Render
+## Deployment Notes
 
-Create a **Web Service** from the `backend` directory with:
+- Deploy the `frontend/` folder to Vercel.
+- Deploy the `backend/` folder to Render.
+- Set `VITE_API_URL` in the frontend environment to the deployed backend URL.
 
-- Build Command: `pip install -r requirements.txt`
-- Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
+## Resume-Friendly Highlights
 
-After deploy, confirm:
-
-- `https://your-backend.onrender.com/health`
-
-## Frontend on Vercel
-
-Create a Vercel project using the `frontend` directory as the root.
-
-Set this environment variable in Vercel:
-
-```env
-VITE_API_URL=https://your-backend.onrender.com
-```
-
-Then redeploy the frontend.
-
-## Notes
-
-- The frontend now expects `VITE_API_URL` in production.
-- Backend CORS is already enabled in Flask.
-- Model files stay in `backend/model/` and are loaded at startup.
+- End-to-end full-stack implementation with frontend, backend, and ML.
+- Real-time news verification use case.
+- Clear separation of frontend and backend responsibilities.
+- Deployment-ready configuration for Vercel and Render.
